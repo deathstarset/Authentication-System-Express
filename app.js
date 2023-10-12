@@ -8,7 +8,7 @@ const endpointNotFound = require("./middlewares/endpointNotFound");
 const authenticationRouter = require("./routes/authentication");
 
 app.use(express.json());
-app.use("/api/v1/user", authenticationRouter);
+app.use("/api/v1/auth", authenticationRouter);
 app.use(errorHanlder);
 app.use(endpointNotFound);
 const start = async () => {
