@@ -14,6 +14,6 @@ const register = asyncMiddleware(async (req, res, next) => {
 });
 
 const login = asyncMiddleware(async (req, res, next) => {
-  res.send("Login");
+  const { username, password } = req.body;
 });
 module.exports = { register, login };
