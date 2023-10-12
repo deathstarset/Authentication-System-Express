@@ -21,7 +21,7 @@ const login = asyncMiddleware(async (req, res, next) => {
   if (!isMatch) {
     throw new NotAuthenticated("password incorrect");
   }
-  const token = user.genJWT();
+  const token = user.genJWT(user._id);
   res.json({ token });
 });
 module.exports = { register, login };

@@ -37,6 +37,7 @@ userSchema.pre("save", async function () {
 });
 userSchema.methods.genJWT = function (id) {
   const token = jwt.sign({ userID: id }, process.env.JWT_KEY);
+  console.log(id);
   return token;
 };
 userSchema.methods.comparePasswords = async function (password) {
