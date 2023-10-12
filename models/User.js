@@ -6,11 +6,13 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "must provide name"],
+    minLength: 1,
   },
   username: {
     type: String,
     required: [true, "must provide username"],
     unique: true,
+    minLength: 1,
   },
   email: {
     type: String,
@@ -20,21 +22,29 @@ const userSchema = new mongoose.Schema({
       "must provide a valid email",
     ],
     unique: true,
+    minLength: 8,
   },
   password: {
     type: String,
-    required: [true, "must provide email"],
+    required: [true, "must provide password"],
+    mingLength: 8,
   },
 });
-// hashing the password before sending it to the db
+
 userSchema.pre("save", async function () {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
 userSchema.methods.genJWT = function (id) {
   const token = jwt.sign({ userID: id }, process.env.JWT_KEY);
+  console.log(id);
   return token;
 };
+userSchema.methods.comparePasswords = async function (password) {
+  const isMatch = bcrypt.compare(password, this.password);
+  return isMatch;
+};
+
 const User = mongoose.model("user", userSchema);
 
 module.exports = User;
