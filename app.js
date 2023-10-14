@@ -7,7 +7,7 @@ const errorHanlder = require("./middlewares/error-handler");
 const endpointNotFound = require("./middlewares/endpointNotFound");
 const authenticationRouter = require("./routes/authentication");
 const authorizationMiddleware = require("./middlewares/authorization");
-
+const httpStatusText = require("./utils/httpStatusText");
 app.use(express.json());
 app.use("/api/v1/auth", authenticationRouter);
 
@@ -17,7 +17,7 @@ app.use(authorizationMiddleware);
 app.get("/protectedRoute", async (req, res) => {
   res
     .status(200)
-    .json({ msg: "you are authorized to access this route", userID: req.user });
+    .json({ status: httpStatusText.SUCCESS, data: { userID: req.user } });
 });
 
 app.use(errorHanlder);

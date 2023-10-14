@@ -1,14 +1,15 @@
 const { NotFound, BadRequest, NotAuthenticated } = require("../errors");
 const asyncMiddleware = require("../middlewares/async");
 const User = require("../models/User");
+const httpStatusText = require("../utils/httpStatusText");
 
-const register = asyncMiddleware(async (req, res, next) => {
+const register = asyncMiddleware(async (req, res) => {
   const user = await User.create(req.body);
   const token = user.genJWT(user._id);
-  res.status(201).json({ token });
+  res.status(201).json({ status: httpStatusText.SUCCESS, data: { token } });
 });
 
-const login = asyncMiddleware(async (req, res, next) => {
+const login = asyncMiddleware(async (req, res) => {
   const { username, password } = req.body;
   if (username === "") {
     throw new BadRequest("username must not be empty");
@@ -22,6 +23,7 @@ const login = asyncMiddleware(async (req, res, next) => {
     throw new NotAuthenticated("password incorrect");
   }
   const token = user.genJWT(user._id);
-  res.json({ token });
+  res.json({ status: httpStatusText.SUCCESS, data: { token } });
 });
+
 module.exports = { register, login };
