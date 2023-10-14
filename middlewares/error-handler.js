@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
     return res.status(err.statusCode).json({
       status: err.statusText,
       message: err.message,
-      code: err.statusText,
+      code: err.statusCode,
     });
   }
   if (err instanceof MongooseError) {

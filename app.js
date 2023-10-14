@@ -15,6 +15,7 @@ connectDB(process.env.MONGO_URI, () => {
 
 app.use(express.json());
 app.use("/api/v1/auth", authenticationRouter);
+app.use(endpointNotFound);
 app.use(authorizationMiddleware);
 // authorization test
 app.get("/protectedRoute", async (req, res) => {
@@ -23,4 +24,3 @@ app.get("/protectedRoute", async (req, res) => {
     .json({ status: httpStatusText.SUCCESS, data: { userID: req.user } });
 });
 app.use(errorHanlder);
-app.use(endpointNotFound);
